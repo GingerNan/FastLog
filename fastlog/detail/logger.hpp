@@ -262,7 +262,7 @@ private:
             for (auto& buffer : _full_buffers)
             {
                 _logfs.write(buffer->data(), buffer->size());
-                buffer.reset();
+                buffer->reset();
             }
 
             // 如果满缓冲区列表的缓冲区数量超过2个，只保留2个
