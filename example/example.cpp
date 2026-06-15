@@ -30,12 +30,12 @@ void file_log_func2()
 
 void console_log_test() {
     fastlog::set_consolelog_level(fastlog::LogLevel::Trace);
-    fastlog::console.trace("hello world");
-    fastlog::console.debug("hello world");
-    fastlog::console.info("hello world");
-    fastlog::console.warn("hello world");
-    fastlog::console.error("hello world");
-    fastlog::console.fatal("hello world");
+    fastlog::console.trace("hello world\n");
+    fastlog::console.debug("hello world\n");
+    fastlog::console.info("hello world\n");
+    fastlog::console.warn("hello world\n");
+    fastlog::console.error("hello world\n");
+    fastlog::console.fatal("hello world\n");
 }
 
 void file_log_test() {
@@ -50,9 +50,9 @@ void file_log_test() {
 
 void test() {
     console_log_test();
-    fastlog::console.info("file log write start .............");
+    fastlog::console.info("file log write start .............\n");
     file_log_test();
-    fastlog::console.info("file log write finish .............");
+    fastlog::console.info("file log write finish .............\n");
 }
 
 int main()
