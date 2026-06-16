@@ -1,4 +1,5 @@
 #include <vector>
+#include "fastlog/detail/loglevel.hpp"
 #include "fastlog/fastlog.hpp"
 
 std::vector<int> vec = {1,2,3,4,5,6,7,8,9,10};
@@ -28,7 +29,8 @@ void file_log_func2()
     }
 }
 
-void console_log_test() {
+void console_log_test()
+ {
     fastlog::set_consolelog_level(fastlog::LogLevel::Trace);
     fastlog::console.trace("hello world");
     fastlog::console.debug("hello world");
@@ -38,7 +40,8 @@ void console_log_test() {
     fastlog::console.fatal("hello world");
 }
 
-void file_log_test() {
+void file_log_test()
+ {
     // 注册文件日志器
     auto &file_logger1 = fastlog::file::make_logger("file_log1", FILE_LOG1_PATH);
     auto &file_logger2 = fastlog::file::make_logger("file_log2", FILE_LOG2_PATH);
@@ -48,15 +51,35 @@ void file_log_test() {
     t2.join();
 }
 
-void test() {
+void test2()
+ {
     console_log_test();
     fastlog::console.info("file log write start .............\n");
     file_log_test();
     fastlog::console.info("file log write finish .............\n");
 }
 
+void test1()
+{
+    // 设置控制台日志最低级别
+    fastlog::set_consolelog_level(fastlog::LogLevel::Trace);
+
+    // 控制台日志
+    fastlog::console.info("Hello, FastLog! Value: {}", 18);
+    fastlog::console.warn("This is a warning");
+    fastlog::console.error("This is an error");
+
+    // 文件日志
+    // 注册文件日志器
+    auto& logger = fastlog::file::make_logger("app_log", FILE_LOG1_PATH);
+    logger.info("Application started, user_id: {}", 12345);
+
+    // 获取指定文件日志器
+    fastlog::file::get_logger("app_log")->info("hello world");
+}
+
 int main()
 {
-    test();
+    test1();
     return 0;
 }
