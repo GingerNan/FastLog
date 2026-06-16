@@ -134,7 +134,7 @@ public:
     void log(const logrecord_t& record)
     {
         LogLevelWrapper level_wrapper(level);
-        std::print("{} [{}{}{}] {} {}:{} {}",
+        std::print("{} [{}{}{}] {} {}:{} {}\n",
             record.data_time,
             level_wrapper.to_color(), level_wrapper.to_string(), reset_format(),
             record.thread_id, record.file_name,
