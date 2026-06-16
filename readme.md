@@ -215,45 +215,34 @@ using format_string_wrapper =
 **架构设计**
 
 ```mermaid
-graph TD
-    A[日志写入请求<br/>logger.info] --> B{检查当前缓冲区<br/>是否能容纳消息}
-  
-    B -->|能容纳| C[直接写入当前缓冲区]
+flowchart TD
+    A["日志写入请求 logger.info"] --> B{"当前缓冲区能容纳消息吗"}
+
+    B -- "能容纳" --> C["直接写入当前缓冲区"]
     C --> D[写入完成]
-  
-    B -->|不能容纳| E[当前缓冲区移至<br/>满缓冲区列表]
-    E --> F{检查空缓冲区列表<br/>是否为空}
-  
-    F -->|非空| G[从空缓冲区列表<br/>取出一个缓冲区]
-    F -->|为空| H[创建新的缓冲区]
-  
-    G --> I[设为新的当前缓冲区]
+
+    B -- "不能容纳" --> E["当前缓冲区移至满缓冲区列表"]
+    E --> F{"空缓冲区列表为空吗"}
+
+    F -- "非空" --> G["从空缓冲区列表取出一个缓冲区"]
+    F -- "为空" --> H["创建新的缓冲区"]
+
+    G --> I["设为新的当前缓冲区"]
     H --> I
-  
-    I --> J[写入消息到<br/>新当前缓冲区]
-    J --> K[通知后台工作线程<br/>cv.notify_one]
+
+    I --> J["写入消息到新当前缓冲区"]
+    J --> K["通知后台工作线程 cv.notify_one"]
     K --> D
-  
-    %% 后台线程处理流程
-    L[后台工作线程] --> M{等待条件变量通知<br/>cv.wait}
-    M --> N{检查满缓冲区列表<br/>是否为空}
-  
-    N -->|为空| M
-    N -->|非空| O[取出满缓冲区]
-    O --> P[将缓冲区数据<br/>写入文件流]
-    P --> Q[清空缓冲区<br/>buffer.reset]
-    Q --> R[将缓冲区移至<br/>空缓冲区列表]
+
+    L["后台工作线程"] --> M{"等待条件变量通知 cv.wait"}
+    M --> N{"满缓冲区列表为空吗"}
+
+    N -- "为空" --> M
+    N -- "非空" --> O["取出满缓冲区"]
+    O --> P["将缓冲区数据写入文件流"]
+    P --> Q["清空缓冲区 buffer.reset"]
+    Q --> R["将缓冲区移至空缓冲区列表"]
     R --> M
-  
-    %% 样式定义
-    classDef frontThread fill:#e1f5fe,stroke:#01579b,stroke-width:2px
-    classDef backThread fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    classDef buffer fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    classDef decision fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
-  
-    class A,B,C,D,E,F,G,H,I,J,K frontThread
-    class L,M,N,O,P,Q,R backThread
-    class B,F,N decision
 ```
 
 ```mermaid
