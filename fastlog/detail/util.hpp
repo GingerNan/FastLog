@@ -44,7 +44,7 @@ public:
     }
 };
 
-std::optional<std::string> get_current_time_tostring(bool is_repeat = true)
+inline std::optional<std::string> get_current_time_tostring(bool is_repeat = true)
 {
     static thread_local std::array<char, 64> buf{};
     static thread_local std::chrono::seconds last_second{0};

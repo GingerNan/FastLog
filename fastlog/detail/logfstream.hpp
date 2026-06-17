@@ -18,8 +18,8 @@ public:
     {
         // 如果文件路径有父目录
         auto log_dir = _file_path.parent_path();
-        // 如果日志目录不存在，创建目录
-        if (!std::filesystem::exists(log_dir))
+        // 如果日志目录不存在，创建目录。当日志目录为空时，会在执行目录生成日志
+        if (!log_dir.empty() && !std::filesystem::exists(log_dir))
         {
             std::filesystem::create_directories(log_dir);
         }

@@ -71,7 +71,7 @@ void test1()
 
     // 文件日志
     // 注册文件日志器
-    auto& logger = fastlog::file::make_logger("app_log", FILE_LOG1_PATH);
+    auto& logger = fastlog::file::make_logger("app_log");
     logger.info("Application started, user_id: {}", 12345);
 
     // 获取指定文件日志器

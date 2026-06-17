@@ -8,12 +8,12 @@ namespace fastlog
 // 日志级别
 enum class LogLevel
 {
-    Trace,
-    Debug,
-    Info,
-    Warn,
-    Error,
-    Fatal,
+    Trace,      // 最详细的调试信息
+    Debug,      // 调试信息
+    Info,       // 一般信息
+    Warn,       // 警告信息
+    Error,      // 错误信息
+    Fatal,      // 致命信息
 };
 } // namespace fastlog
 

@@ -1,9 +1,10 @@
 #pragma once
 
 #include "fastlog/detail/logbuffers.hpp"
+#include "fastlog/detail/logfstream.hpp"
 #include "fastlog/detail/loglevel.hpp"
-#include "logfstream.hpp"
 #include "fastlog/detail/util.hpp"
+
 #include <chrono>
 #include <concepts>
 #include <condition_variable>
