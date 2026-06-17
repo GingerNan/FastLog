@@ -29,6 +29,7 @@ struct logrecord_t
 {
     const char* data_time;      // 日志记录时间
     uint64_t thread_id;         // 线程ID
+    uint32_t pid;               // 进程ID
     const char* file_name;      // 文件名
     size_t line;                // 行号
     std::string content;        // 日志内容
@@ -116,7 +117,8 @@ private:
         // 调用派生类的log方法记录日志
         static_cast<DerviceLogger*>(this)->template log<LEVEL>(logrecord_t{
             .data_time = time_str.c_str(),
-            .thread_id = util::get_current_pid(),
+            .thread_id = util::get_current_thread_id(),
+            .pid = util::get_current_pid(),
             .file_name = fmt_w.loc.file_name(),
             .line = fmt_w.loc.line(),
             .content = std::format(fmt_w.fmt, std::forward<Args>(args)...)
@@ -138,7 +140,7 @@ public:
         std::print("{} [{}{}{}] {} {}:{} {}\n",
             record.data_time,
             level_wrapper.to_color(), level_wrapper.to_string(), reset_format(),
-            record.thread_id, record.file_name,
+            record.pid, record.file_name,
             record.line, record.content    
         );
     }
@@ -199,7 +201,7 @@ public:
         LogLevelWrapper level_wrapper(leve);
         std::string msg{std::format("{} {} {} {}:{} {}\n",
             record.data_time, level_wrapper.to_string(),
-            record.thread_id, record.file_name, record.line, record.content
+            record.pid, record.file_name, record.line, record.content
         )};
         
         // 如果当前缓冲区能够容纳msg，就写入当前缓冲区
